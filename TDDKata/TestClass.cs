@@ -24,10 +24,14 @@ namespace TDDKata
 
         [Test(Description = "Should calculate two numbers")]
         [TestCase("", 0)]
+        [TestCase("  ", 0)]
         [TestCase("0", 0)]
         [TestCase("1", 1)]
+        [TestCase("    1   ", 1)]
         [TestCase("0,0", 0)]
         [TestCase("1,2", 3)]
+        [TestCase("1 , 2", 3)]
+        [TestCase("1;2", 3)]
         public void ShouldCalculateTwoNumbers(string input, int result)
         {
             int value = calc.Sum(input);
@@ -44,6 +48,9 @@ namespace TDDKata
         [TestCase("1,-1")]
         [TestCase("-1,1")]
         [TestCase("-1,-1")]
+        [TestCase("1.1")]
+        [TestCase("1:1")]
+        [TestCase("1,,1")]
         public void ShouldReturnMinusOneOnInvalidInput(string input)
         {
             int value = calc.Sum(input);
