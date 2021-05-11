@@ -17,9 +17,7 @@ namespace TDDKata
             if (v == null)
                 return -1;
 
-            var parts = v.Split(',');
-            if (parts.Length > 2)
-                return -1;
+            var parts = v.Split(',', '\n');
 
             int sum = 0;
             foreach (var part in parts)
