@@ -31,14 +31,14 @@ namespace TDDKata
         [TestCase("0,0", 0)]
         [TestCase("1,2", 3)]
         [TestCase("1 , 2", 3)]
-        [TestCase("1;2", 3)]
-        public void ShouldCalculateTwoNumbers(string input, int result)
+        public void ShouldCalculateTwoNumbers(string input, int expected)
         {
-            int value = calc.Sum(input);
-            Assert.AreEqual(value, result);
+            int result = calc.Sum(input);
+            Assert.AreEqual(expected, result);
         }
 
         [Test(Description = "Should return minus one on invalid input")]
+        [TestCase(null)]
         [TestCase("-1")]
         [TestCase("-")]
         [TestCase("err")]
@@ -51,10 +51,11 @@ namespace TDDKata
         [TestCase("1.1")]
         [TestCase("1:1")]
         [TestCase("1,,1")]
+        [TestCase("1;1")]
         public void ShouldReturnMinusOneOnInvalidInput(string input)
         {
-            int value = calc.Sum(input);
-            Assert.AreEqual(value, -1);
+            int result = calc.Sum(input);
+            Assert.AreEqual(-1, result);
         }
     }
 }
