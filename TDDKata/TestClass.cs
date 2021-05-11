@@ -88,7 +88,7 @@ namespace TDDKata
             Assert.AreEqual(expected, result);
         }
 
-        [Test(Description = "Should not calculate sum of 100 numbers")]
+        [Test(Description = "Should not calculate sum of 100 numbers if last is incorrect")]
         [TestCase("-1")]
         [TestCase("1;")]
         [TestCase("@")]
@@ -107,6 +107,30 @@ namespace TDDKata
             int result = calc.Sum(input.ToString());
 
             //Assert
+            Assert.AreEqual(-1, result);
+        }
+
+        [Test(Description = "Should calculate sum if dividers defined in input")]
+        [TestCase("//\n\n1\n2", 3)]
+        [TestCase("//@\n2@3@4", 9)]
+        [TestCase("//1\n111", 2)]
+        [TestCase("///\n1/1", 2)]
+        public void ShouldCalculateIfDividersDefinedInInput(string input, int expected)
+        {
+            int result = calc.Sum(input);
+            Assert.AreEqual(expected, result);
+        }
+
+        [Test(Description = "Should not calculate sum if input with dividers has incorrect format")]
+        [TestCase("//ab\n1ab2")]
+        [TestCase("//\n23")]
+        [TestCase("//;\n5,6")]
+        [TestCase("/;\n1;1")]
+        [TestCase(";\n1;1")]
+        [TestCase("\\\\;\n1;1")]
+        public void ShouldCalculateIfDividersDefinedInInput(string input)
+        {
+            int result = calc.Sum(input);
             Assert.AreEqual(-1, result);
         }
     }
