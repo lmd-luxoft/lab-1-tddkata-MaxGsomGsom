@@ -1,7 +1,12 @@
-﻿// NUnit 3 tests
+﻿// Copyright 2021 Russian Post
+// This source code is Russian Post Confidential Proprietary.
+// This software is protected by copyright. All rights and titles are reserved.
+// You shall not use, copy, distribute, modify, decompile, disassemble or reverse engineer the software.
+// Otherwise this violation would be treated by law and would be subject to legal prosecution.
+// Legal use of the software provides receipt of a license from the right holder only.
+
+// NUnit 3 tests
 // See documentation : https://github.com/nunit/docs/wiki/NUnit-Documentation
-using System.Collections;
-using System.Collections.Generic;
 using NUnit.Framework;
 
 namespace TDDKata
@@ -9,12 +14,40 @@ namespace TDDKata
     [TestFixture]
     public class TestClass
     {
-        [Test]
-        public void SimpleTest()
+        private StringCalc calc;
+
+        [SetUp]
+        public void SetUp()
         {
-            StringCalc calc = new StringCalc();
-            int value = calc.Sum("2,2");
-            Assert.That(value, Is.EqualTo(4), "Wrong actual value");
+            calc = new StringCalc();
+        }
+
+        [Test(Description = "Should calculate two numbers")]
+        [TestCase("", 0)]
+        [TestCase("0", 0)]
+        [TestCase("1", 1)]
+        [TestCase("0,0", 0)]
+        [TestCase("1,2", 3)]
+        public void ShouldCalculateTwoNumbers(string input, int result)
+        {
+            int value = calc.Sum(input);
+            Assert.AreEqual(value, result);
+        }
+
+        [Test(Description = "Should return minus one on invalid input")]
+        [TestCase("-1")]
+        [TestCase("-")]
+        [TestCase("err")]
+        [TestCase("1,err")]
+        [TestCase("1,1,1")]
+        [TestCase("@,1")]
+        [TestCase("1,-1")]
+        [TestCase("-1,1")]
+        [TestCase("-1,-1")]
+        public void ShouldReturnMinusOneOnInvalidInput(string input)
+        {
+            int value = calc.Sum(input);
+            Assert.AreEqual(value, -1);
         }
     }
 }
