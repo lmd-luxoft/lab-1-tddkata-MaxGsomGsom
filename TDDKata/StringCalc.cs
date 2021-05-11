@@ -17,7 +17,26 @@ namespace TDDKata
             if (v == null)
                 return -1;
 
-            var parts = v.Split(',', '\n');
+            // Set default dividers
+            var dividers = new[] {',', '\n'};
+
+            // Extract divider from input if possible
+            if (v.Length >= 4 && v.Substring(0, 2) == "//")
+            {
+                if (v[3] != '\n')
+                    return -1;
+
+                dividers = new[] {v[2]};
+
+                // Divider should not be digit
+                if (dividers[0] >= '0' && dividers[0] <= '9')
+                    return -1;
+
+                v = v.Substring(4);
+            }
+
+            // Split input and sum every part if possible
+            var parts = v.Split(dividers);
 
             int sum = 0;
             foreach (var part in parts)

@@ -113,7 +113,6 @@ namespace TDDKata
         [Test(Description = "Should calculate sum if dividers defined in input")]
         [TestCase("//\n\n1\n2", 3)]
         [TestCase("//@\n2@3@4", 9)]
-        [TestCase("//1\n111", 2)]
         [TestCase("///\n1/1", 2)]
         public void ShouldCalculateIfDividersDefinedInInput(string input, int expected)
         {
@@ -128,6 +127,8 @@ namespace TDDKata
         [TestCase("/;\n1;1")]
         [TestCase(";\n1;1")]
         [TestCase("\\\\;\n1;1")]
+        [TestCase("//0\n202")]
+        [TestCase("//9\n292")]
         public void ShouldCalculateIfDividersDefinedInInput(string input)
         {
             int result = calc.Sum(input);
