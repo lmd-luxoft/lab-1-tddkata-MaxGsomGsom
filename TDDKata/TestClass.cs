@@ -7,6 +7,8 @@
 
 // NUnit 3 tests
 // See documentation : https://github.com/nunit/docs/wiki/NUnit-Documentation
+
+using System.Text;
 using NUnit.Framework;
 
 namespace TDDKata
@@ -31,6 +33,11 @@ namespace TDDKata
         [TestCase("0,0", 0)]
         [TestCase("1,2", 3)]
         [TestCase("1 , 2", 3)]
+        [TestCase("1\n2", 3)]
+        [TestCase("1\n2\n3", 6)]
+        [TestCase("1, 2,3", 6)]
+        [TestCase("1,2,3 \n 4", 10)]
+        [TestCase("1,,3", 4)]
         public void ShouldCalculateTwoNumbers(string input, int expected)
         {
             int result = calc.Sum(input);
@@ -43,18 +50,63 @@ namespace TDDKata
         [TestCase("-")]
         [TestCase("err")]
         [TestCase("1,err")]
-        [TestCase("1,1,1")]
         [TestCase("@,1")]
         [TestCase("1,-1")]
         [TestCase("-1,1")]
         [TestCase("-1,-1")]
         [TestCase("1.1")]
         [TestCase("1:1")]
-        [TestCase("1,,1")]
         [TestCase("1;1")]
+        [TestCase("1,1,-1")]
+        [TestCase("1,1;1")]
+
         public void ShouldReturnMinusOneOnInvalidInput(string input)
         {
             int result = calc.Sum(input);
+            Assert.AreEqual(-1, result);
+        }
+
+        [Test(Description = "Should calculate sum of numbers")]
+        [TestCase('\n', 50)]
+        [TestCase(',', 100)]
+        public void ShouldCalculateSumOfNumbers(char divider, int count)
+        {
+            //Arrange
+            int expected = 0;
+            var input = new StringBuilder();
+            for (int i = 0; i < count; i++)
+            {
+                expected += i;
+                input.Append(i);
+                input.Append(divider);
+            }
+
+            //Act
+            int result = calc.Sum(input.ToString());
+
+            //Assert
+            Assert.AreEqual(expected, result);
+        }
+
+        [Test(Description = "Should not calculate sum of 100 numbers")]
+        [TestCase("-1")]
+        [TestCase("1;")]
+        [TestCase("@")]
+        public void ShouldNotCalculateSumOfNumbers(string incorrectNumber)
+        {
+            //Arrange
+            var input = new StringBuilder();
+            for (int i = 0; i < 9; i++)
+            {
+                input.Append(i);
+                input.Append(',');
+            }
+            input.Append(incorrectNumber);
+
+            //Act
+            int result = calc.Sum(input.ToString());
+
+            //Assert
             Assert.AreEqual(-1, result);
         }
     }
